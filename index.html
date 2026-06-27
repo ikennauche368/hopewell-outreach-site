@@ -492,7 +492,7 @@ function attachPageHandlers(page){
     });
   }
   if(page === 'Donate'){
-    const BTC_ADDRESS = 'YOUR_BTC_WALLET_ADDRESS_HERE'; // <-- replace with your real BTC wallet address
+    const BTC_ADDRESS = 'YOUR_BTC_WALLET_ADDRESS_HERE'; // BTC wallet
     document.getElementById('btcAddress').textContent = BTC_ADDRESS;
     document.getElementById('btcQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin:${encodeURIComponent(BTC_ADDRESS)}`;
 
@@ -524,7 +524,7 @@ function attachPageHandlers(page){
 
     const amountsDiv = document.getElementById('amounts');
     const donateBtn = document.getElementById('donateBtn');
-    const PAYPAL_USERNAME = 'YourPayPalUsername'; // <-- replace with your real PayPal.Me username
+    const PAYPAL_USERNAME = 'YourPayPalUsername'; // Paypal details
     let currentAmount = 50;
     amountsDiv.addEventListener('click', (e)=>{
       const btn = e.target.closest('button[data-amt]');
