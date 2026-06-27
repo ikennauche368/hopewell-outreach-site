@@ -57,10 +57,9 @@
   .btn-outline:hover{background:rgba(255,255,255,.1);}
   .hero-grid{position:relative;height:288px;}
   @media(min-width:768px){.hero-grid{height:384px;}}
-  .hero-grid-inner{position:absolute;inset:0;border-radius:24px;background:var(--forest-dark);display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;}
-  .hero-tile{border-radius:16px;background:rgba(40,84,59,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:8px;}
-  .hero-tile svg{color:var(--gold);}
-  .hero-tile span{font-size:12px;color:var(--light-text);}
+  .hero-grid-inner{position:absolute;inset:0;border-radius:24px;overflow:hidden;}
+  .hero-photo{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-photo-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(31,61,43,0.15), rgba(28,43,34,0.55));}
   .pathline{position:absolute;bottom:0;left:0;width:100%;height:64px;opacity:.7;}
 
   /* SECTIONS */
@@ -80,8 +79,9 @@
   .card-grid{display:grid;gap:24px;grid-template-columns:1fr;}
   @media(min-width:640px){.card-grid{grid-template-columns:1fr 1fr;}}
   @media(min-width:900px){.card-grid{grid-template-columns:1fr 1fr 1fr 1fr;}}
-  .pcard{background:#fff;border-radius:16px;padding:24px;border:1px solid var(--mist);transition:border-color .2s;}
+  .pcard{background:#fff;border-radius:16px;padding:24px;border:1px solid var(--mist);transition:border-color .2s;overflow:hidden;}
   .pcard:hover{border-color:var(--gold);}
+  .pcard-img{width:calc(100% + 48px);margin:-24px -24px 16px;height:140px;object-fit:cover;display:block;}
   .pcard svg{color:var(--forest);margin-bottom:16px;}
   .pcard h3{font-size:18px;font-weight:600;margin:0 0 8px;}
   .pcard .blurb{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 16px;}
@@ -110,6 +110,11 @@
   .program-row.base{background:#fff;}
   .picon{width:64px;height:64px;border-radius:16px;background:var(--forest);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .picon svg{color:var(--gold);}
+  .program-row-media{position:relative;width:100%;flex-shrink:0;}
+  @media(min-width:768px){.program-row-media{width:220px;}}
+  .program-row-img{width:100%;height:160px;object-fit:cover;border-radius:16px;display:block;}
+  .picon-badge{position:absolute;bottom:-14px;left:14px;width:48px;height:48px;border-radius:12px;background:var(--forest);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.15);}
+  .picon-badge svg{color:var(--gold);width:22px;height:22px;}
   .program-row h2{font-size:24px;font-weight:600;margin:0 0 12px;}
   .program-row p{color:var(--muted);line-height:1.7;margin:0;}
 
@@ -142,7 +147,7 @@
   .btn-clay-full:hover{background:var(--clay-dark);}
   .back-home{margin-top:16px;background:none;border:none;font-size:14px;color:var(--muted);}
   .pay-tabs{display:flex;gap:8px;margin-bottom:24px;border-radius:999px;background:#fff;padding:4px;}
-  .pay-tab{flex:1;padding:10px 0;border-radius:999px;border:none;background:transparent;font-weight:600;font-size:14px;color:var(--muted);}
+  .pay-tab{flex:1;padding:10px 4px;border-radius:999px;border:none;background:transparent;font-weight:600;font-size:13px;color:var(--muted);}
   .pay-tab.active{background:var(--forest);color:#fff;}
   .btc-address-row{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:10px 14px;}
   .btc-address-row code{flex:1;font-size:12px;word-break:break-all;color:var(--ink);}
@@ -247,13 +252,13 @@ const ICONS = {
 };
 
 const PROGRAMS = [
-  {key:'food', title:'Free Food Supply', blurb:"Weekly food packages and hot meals for families facing hunger, distributed through five neighborhood pantries.",
+  {key:'food', title:'Free Food Supply', photo:'https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?auto=format&fit=crop&w=800&q=80', blurb:"Weekly food packages and hot meals for families facing hunger, distributed through five neighborhood pantries.",
    detail:"Hunger is rarely a single-day problem, so we built a weekly rhythm instead of a one-time handout. Every Saturday, volunteers pack produce, grains, and protein into family-sized boxes at our five partner pantries. Households can register once and return each week without re-applying, because dignity shouldn't require paperwork. In the last year we served over 14,000 meals and kept three pantries stocked through winter shortages."},
-  {key:'users', title:'Youth Mentorship', blurb:"One-on-one mentors and after-school programming that help young people finish school and plan what's next.",
+  {key:'users', title:'Youth Mentorship', photo:'https://images.unsplash.com/photo-1632215861513-130b66fe97f4?auto=format&fit=crop&w=800&q=80', blurb:"One-on-one mentors and after-school programming that help young people finish school and plan what's next.",
    detail:"Every young person in the program is matched with a mentor who sticks with them for at least a full school year. Consistency is the whole design. Pairs meet weekly for homework support, college and trade-school planning, and honest conversation that's hard to schedule elsewhere. We currently support 120 mentor pairs across four schools, with a 91% on-track-to-graduate rate among participants."},
-  {key:'health', title:'Free Health Care', blurb:"Mobile clinics bring checkups, screenings, and basic treatment to neighborhoods without nearby care.",
+  {key:'health', title:'Free Health Care', photo:'https://images.unsplash.com/photo-1666887360680-9dc27a1d2753?auto=format&fit=crop&w=800&q=80', blurb:"Mobile clinics bring checkups, screenings, and basic treatment to neighborhoods without nearby care.",
    detail:"Our mobile clinic visits underserved neighborhoods on a published monthly schedule, posted at community centers and churches so people can plan around it. Licensed volunteer nurses and doctors provide checkups, screenings, vaccinations, and basic treatment at no cost, with referrals for anything beyond our scope. Last year the clinic logged over 2,000 patient visits and caught early-stage conditions that would otherwise have gone untreated."},
-  {key:'shirt', title:'Clothing the Needy', blurb:"A standing clothing bank stocked by community donations, open to anyone who needs to shop it, free.",
+  {key:'shirt', title:'Clothing the Needy', photo:'https://images.unsplash.com/photo-1653508310734-d3f4d0f8dd8a?auto=format&fit=crop&w=800&q=80', blurb:"A standing clothing bank stocked by community donations, open to anyone who needs to shop it, free.",
    detail:"Our clothing bank works like a real store, with racks sorted by size, fitting rooms, and no questions asked, because shopping for your own clothes, even for free, restores a measure of dignity that a handed-over bag doesn't. Donations are sorted and laundered by volunteers before they ever reach the floor. The bank is open three days a week and clothed over 3,400 people last year, with a dedicated rack for interview and work attire."}
 ];
 
@@ -285,7 +290,8 @@ function renderHome(){
       </div>
       <div class="hero-grid">
         <div class="hero-grid-inner">
-          ${PROGRAMS.map(p=>`<div class="hero-tile">${ICONS[p.key]}<span>${p.title}</span></div>`).join('')}
+          <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?auto=format&fit=crop&w=900&q=80" alt="Volunteers distributing food donations" class="hero-photo" />
+          <div class="hero-photo-overlay"></div>
         </div>
       </div>
     </div>
@@ -316,6 +322,7 @@ function renderHome(){
       <div class="card-grid">
         ${PROGRAMS.map(p=>`
           <div class="pcard">
+            <img src="${p.photo}" alt="${p.title}" class="pcard-img" loading="lazy" />
             ${ICONS[p.key]}
             <h3>${p.title}</h3>
             <p class="blurb">${p.blurb}</p>
@@ -371,7 +378,10 @@ function renderPrograms(){
     <p style="color:var(--muted);max-width:640px;margin:0 0 48px;">Each program addresses a specific, immediate need, and each is built to keep serving the same neighbors consistently, week after week.</p>
     ${PROGRAMS.map((p,i)=>`
       <div class="program-row ${i%2===0?'base':'alt'}">
-        <div class="picon">${ICONS[p.key]}</div>
+        <div class="program-row-media">
+          <img src="${p.photo}" alt="${p.title}" class="program-row-img" loading="lazy" />
+          <div class="picon-badge">${ICONS[p.key]}</div>
+        </div>
         <div>
           <h2>${p.title}</h2>
           <p>${p.detail}</p>
@@ -421,11 +431,17 @@ function renderDonate(){
     <p>Every contribution, large or small, directly funds food, mentorship, healthcare, and clothing for families in our community.</p>
     <div class="donate-card">
       <div class="pay-tabs" id="payTabs">
-        <button class="pay-tab active" data-method="paypal">PayPal</button>
+        <button class="pay-tab active" data-method="card">Card</button>
+        <button class="pay-tab" data-method="paypal">PayPal</button>
         <button class="pay-tab" data-method="bitcoin">Bitcoin</button>
       </div>
 
-      <div id="paypalPanel">
+      <div id="cardPanel">
+        <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Pay securely by debit/credit card, M-Pesa, or bank transfer via Paystack.</p>
+        <button class="btn-clay-full" id="paystackBtn">Donate with Card</button>
+      </div>
+
+      <div id="paypalPanel" class="hidden">
         <div class="amounts" id="amounts">
           ${[25,50,100,250].map(a=>`<button data-amt="${a}" class="${a===50?'active':''}">$${a}</button>`).join('')}
         </div>
@@ -492,25 +508,28 @@ function attachPageHandlers(page){
     });
   }
   if(page === 'Donate'){
-    const BTC_ADDRESS = 'YOUR_BTC_WALLET_ADDRESS_HERE'; // BTC wallet
+    const PAYSTACK_LINK = 'https://paystack.com/pay/YOUR_PAYSTACK_SLUG'; // <-- replace with your real Paystack Payment Page link
+    document.getElementById('paystackBtn').addEventListener('click', ()=>{
+      window.open(PAYSTACK_LINK, '_blank');
+    });
+
+    const BTC_ADDRESS = 'YOUR_BTC_WALLET_ADDRESS_HERE'; // <-- replace with your real BTC wallet address
     document.getElementById('btcAddress').textContent = BTC_ADDRESS;
     document.getElementById('btcQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin:${encodeURIComponent(BTC_ADDRESS)}`;
 
     const payTabs = document.getElementById('payTabs');
+    const cardPanel = document.getElementById('cardPanel');
     const paypalPanel = document.getElementById('paypalPanel');
     const bitcoinPanel = document.getElementById('bitcoinPanel');
+    const panels = { card: cardPanel, paypal: paypalPanel, bitcoin: bitcoinPanel };
     payTabs.addEventListener('click', (e)=>{
       const tab = e.target.closest('.pay-tab');
       if(!tab) return;
       payTabs.querySelectorAll('.pay-tab').forEach(t=>t.classList.remove('active'));
       tab.classList.add('active');
-      if(tab.dataset.method === 'paypal'){
-        paypalPanel.classList.remove('hidden');
-        bitcoinPanel.classList.add('hidden');
-      } else {
-        bitcoinPanel.classList.remove('hidden');
-        paypalPanel.classList.add('hidden');
-      }
+      Object.entries(panels).forEach(([method, panel])=>{
+        panel.classList.toggle('hidden', method !== tab.dataset.method);
+      });
     });
 
     document.getElementById('copyBtcBtn').addEventListener('click', ()=>{
@@ -524,7 +543,7 @@ function attachPageHandlers(page){
 
     const amountsDiv = document.getElementById('amounts');
     const donateBtn = document.getElementById('donateBtn');
-    const PAYPAL_USERNAME = 'YourPayPalUsername'; // Paypal details
+    const PAYPAL_USERNAME = 'YourPayPalUsername'; // <-- replace with your real PayPal.Me username
     let currentAmount = 50;
     amountsDiv.addEventListener('click', (e)=>{
       const btn = e.target.closest('button[data-amt]');
